@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JS Bin</title>
+
+  <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
+</head>
+<body>
+  <div id="grid-container" data-bind="grid: $data"></div>
+
+  <script type="application/javascript">
+
+  /**
+
+  [x] Render in basic forEach loop.
+  [ ] Render columns if specified, otherwise render $data.
+  [ ] Add header.
+  [ ] Add sort handlers.
+  [ ] Support single-row selection.
+  [ ] Support multi-row selection.
+  [ ] Extract templates to template factory (or layout).
+
+  */
+
+  function init(ele, value, bindings, model, context) {
+    ko.renderTemplate('grid-template', value, {
+      templateEngine: new ko.nativeTemplateEngine()
+    }, ele);
+
+    return { controlsDescendantBindings: true };
+  }
+
+  ko.bindingHandlers.grid = { init: init };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var i, grid, element;
+
+    i = 1;
+    grid = ko.observableArray();
+    element = document.getElementById('grid-container');
+
+    ko.applyBindings(grid, element);
+
+    setInterval(function () {
+      grid.push(i++);
+    }, 1000);
+  });
+
+  </script>
+
+  <script id="grid-template" type="text/html">
+
+  <div class="grid" data-bind="foreach: $data">
+    <div class="grid-row" data-bind="text: $data"></div>
+  </div>
+
+  </script>
+</body>
+</html>
