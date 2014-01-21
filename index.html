@@ -57,9 +57,18 @@
     ko.applyBindings(grid, element);
 
     setInterval(function () {
-      data.push({ name: i, count: i });
+      data.push({ name: ko.observable(i), count: ko.observable(i) });
       i += 1;
     }, 1000);
+
+    setInterval(function () {
+      var raw, index, element;
+
+      raw = data();
+      index = Math.floor(Math.random() * (raw.length));
+      element = raw[index];
+      element.name('Edited!');
+    }, 5000);
   });
 
   </script>
