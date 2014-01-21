@@ -13,11 +13,12 @@
   /**
 
   [x] Render in basic forEach loop.
-  [ ] Render columns if specified, otherwise loop over properties.
-  [ ] Add header.
+  [x] Render columns if specified.
+  [x] Add header.
   [ ] Add sort handlers.
   [ ] Support single-row selection.
   [ ] Support multi-row selection.
+  [ ] Use object properties as default column array.
   [ ] Extract templates to template factory (or layout).
 
   */
@@ -57,6 +58,7 @@
 
     setInterval(function () {
       data.push({ name: i, count: i });
+      i += 1;
     }, 1000);
   });
 
@@ -64,10 +66,16 @@
 
   <script id="grid-template" type="text/html">
 
-  <div class="grid" data-bind="foreach: { data: data, as: 'row' }">
-    <div class="grid-row" data-bind="foreach: { data: $parent.columns, as: 'column' }">
-      <span data-bind="text: column.name"></span>: <span class="grid-cell" data-bind="text: row[column.name]"></span>
+  <div class="grid">
+    <div class="grid-row grid-row-header" data-bind="foreach: { data: columns, as: 'column' }">
+      <span class="grid-cell grid-cell-header" data-bind="text: column.name"></span>
     </div>
+
+    <!-- ko foreach: { data: data, as: 'row' } -->
+    <div class="grid-row" data-bind="foreach: { data: $parent.columns, as: 'column' }">
+      <span class="grid-cell" data-bind="text: row[column.name]"></span>
+    </div>
+    <!-- /ko -->
   </div>
 
   </script>
