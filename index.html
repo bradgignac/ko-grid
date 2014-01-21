@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>JS Bin</title>
+  <title>KO Grid</title>
 
   <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
 </head>
@@ -13,7 +13,7 @@
   /**
 
   [x] Render in basic forEach loop.
-  [ ] Render columns if specified, otherwise render $data.
+  [ ] Render columns if specified, otherwise loop over properties.
   [ ] Add header.
   [ ] Add sort handlers.
   [ ] Support single-row selection.
@@ -32,17 +32,31 @@
 
   ko.bindingHandlers.grid = { init: init };
 
+  kg = {};
+  kg.grid = function (observable, columns) {
+    var columnArray;
+
+    columnArray = [];
+    columns = columns || {};
+    Object.keys(columns).forEach(function (key) {
+      columnArray.push({ name: key, template: columns[key] });
+    });
+
+    return { data: observable, columns: columnArray };
+  };
+
   document.addEventListener("DOMContentLoaded", function () {
-    var i, grid, element;
+    var i, data, grid, element;
 
     i = 1;
-    grid = ko.observableArray();
+    data = ko.observableArray();
+    grid = kg.grid(data, { 'name': 'text', 'count': 'link' });
     element = document.getElementById('grid-container');
 
     ko.applyBindings(grid, element);
 
     setInterval(function () {
-      grid.push(i++);
+      data.push({ name: i, count: i });
     }, 1000);
   });
 
@@ -50,8 +64,10 @@
 
   <script id="grid-template" type="text/html">
 
-  <div class="grid" data-bind="foreach: $data">
-    <div class="grid-row" data-bind="text: $data"></div>
+  <div class="grid" data-bind="foreach: { data: data, as: 'row' }">
+    <div class="grid-row" data-bind="foreach: { data: $parent.columns, as: 'column' }">
+      <span data-bind="text: column.name"></span>: <span class="grid-cell" data-bind="text: row[column.name]"></span>
+    </div>
   </div>
 
   </script>
