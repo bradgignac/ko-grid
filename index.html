@@ -64,7 +64,7 @@
     setInterval(function () {
       var raw, index, element;
 
-      raw = data();
+      raw = data.peek();
       index = Math.floor(Math.random() * (raw.length));
       element = raw[index];
       element.name('Edited!');
