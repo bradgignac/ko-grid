@@ -4,7 +4,7 @@
   <title>KO Grid</title>
 
   <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
-  <script src="../dist/ko-grid.js"></script>
+  <script src="ko-grid.js"></script>
 </head>
 <body>
   <div id="grid-container" data-bind="grid: $data"></div>
@@ -38,15 +38,12 @@
     ko.applyBindings(grid, element);
 
     setInterval(function () {
-      console.log('Pushing data...')
       data.push({ name: ko.observable(i), count: ko.observable(i) });
       i += 1;
     }, 1000);
 
     setInterval(function () {
       var raw, index, element;
-
-      console.log('Editing data...')
 
       raw = data.peek();
       index = Math.floor(Math.random() * (raw.length));

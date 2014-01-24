@@ -1,21 +1,77 @@
 module.exports = function (grunt) {
+  'use strict';
+
   grunt.initConfig({
-    clean: {
-      grid: ['dist']
-    },
     browserify: {
       grid: {
         src: ['lib/javascripts/ko-grid.js'],
         dest: 'dist/ko-grid.js'
+      }
+    },
+    clean: {
+      grid: ['dist']
+    },
+    connect: {
+      server: {
+        options: {
+          base: ['dist', 'examples'],
+          livereload: true
+        }
+      }
+    },
+    jshint: {
+      options: {
+        camelcase: true,
+        eqeqeq: true,
+        forin: true,
+        immed: true,
+        indent: 2,
+        latedef: true,
+        newcap: true,
+        noarg: true,
+        noempty: true,
+        nonew: true,
+        strict: true,
+        trailing: true,
+        undef: true,
+        unused: true
+      },
+      build: {
+        src: ['Gruntfile.js'],
+        options: {
+          node: true
+        }
+      },
+      grid: {
+        src: ['lib/javascripts/**/*.js'],
+        options: {
+          node: true,
+          globals: {
+            ko: true
+          }
+        }
+      }
+    },
+    watch: {
+      grid: {
+        files: 'lib/javascripts/**/*.js',
+        tasks: ['build'],
+        options: {
+          livereload: true
+        }
       }
     }
   });
 
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('build', ['browserify']);
   grunt.registerTask('dist', ['clean', 'build']);
+  grunt.registerTask('server', ['build', 'connect', 'watch']);
 
-  grunt.registerTask('default', ['dist']);
+  grunt.registerTask('default', ['build', 'jshint']);
 };
