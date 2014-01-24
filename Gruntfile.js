@@ -1,5 +1,8 @@
 module.exports = function (grunt) {
   grunt.initConfig({
+    clean: {
+      grid: ['dist']
+    },
     browserify: {
       grid: {
         src: ['lib/javascripts/ko-grid.js'],
@@ -9,9 +12,10 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
-  grunt.registerTask('build', ['browserify']); // Templates
-  grunt.registerTask('dist', ['build']); // Clean
+  grunt.registerTask('build', ['browserify']);
+  grunt.registerTask('dist', ['clean', 'build']);
 
   grunt.registerTask('default', ['dist']);
 };
