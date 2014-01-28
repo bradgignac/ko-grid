@@ -52,6 +52,33 @@ module.exports = function (grunt) {
         }
       }
     },
+    karma: {
+      options: {
+        browsers: ['PhantomJS'],
+        frameworks: ['browserify', 'jasmine'],
+        files: [
+          'node_modules/knockout/build/output/knockout-latest.debug.js',
+          'lib/javascripts/**/*.js',
+          'test/**/*.js'
+        ],
+        preprocessors: {
+          'lib/javascripts/**/*.js': ['browserify'],
+          'test/**/*.js': ['browserify']
+        },
+        browserify: {}
+      },
+      ci: {
+        options: {
+          singleRun: true
+        }
+      },
+      watch: {
+        options: {
+          autoWatch: true,
+          singleRun: false
+        }
+      }
+    },
     watch: {
       grid: {
         files: 'lib/javascripts/**/*.js',
@@ -68,10 +95,12 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('build', ['browserify']);
   grunt.registerTask('dist', ['clean', 'build']);
   grunt.registerTask('server', ['build', 'connect', 'watch']);
+  grunt.registerTask('test', ['jshint', 'karma:ci']);
 
-  grunt.registerTask('default', ['build', 'jshint']);
+  grunt.registerTask('default', ['test', 'build']);
 };
