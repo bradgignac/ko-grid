@@ -65,7 +65,9 @@ module.exports = function (grunt) {
           'lib/javascripts/**/*.js': ['browserify'],
           'test/**/*.js': ['browserify']
         },
-        browserify: {}
+        browserify: {
+          watch: true
+        }
       },
       ci: {
         options: {
