@@ -97,10 +97,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('build', ['browserify']);
-  grunt.registerTask('dist', ['clean', 'build']);
-  grunt.registerTask('server', ['build', 'connect', 'watch']);
+  grunt.registerTask('dist', ['clean', 'browserify']);
+  grunt.registerTask('server', ['dist', 'connect', 'watch']);
   grunt.registerTask('test', ['jshint', 'karma:ci']);
 
-  grunt.registerTask('default', ['test', 'build']);
+  grunt.registerTask('default', ['test', 'dist']);
 };
