@@ -4,6 +4,9 @@ module.exports = function (grunt) {
   grunt.initConfig({
     browserify: {
       grid: {
+        options: {
+          transform: ['folderify']
+        },
         src: ['lib/javascripts/ko-grid.js'],
         dest: 'dist/ko-grid.js'
       }
@@ -66,6 +69,7 @@ module.exports = function (grunt) {
           'test/**/*.js': ['browserify']
         },
         browserify: {
+          transform: ['folderify'],
           watch: true
         }
       },
@@ -84,7 +88,7 @@ module.exports = function (grunt) {
     watch: {
       grid: {
         files: 'lib/javascripts/**/*.js',
-        tasks: ['build'],
+        tasks: ['browserify'],
         options: {
           livereload: true
         }
