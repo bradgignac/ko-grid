@@ -3,13 +3,16 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     browserify: {
-      grid: {
+      dist: {
+        options: {
+          transform: ['folderify']
+        },
         src: ['lib/javascripts/ko-grid.js'],
         dest: 'dist/ko-grid.js'
       }
     },
     clean: {
-      grid: ['dist']
+      dist: ['dist']
     },
     connect: {
       server: {
@@ -36,14 +39,8 @@ module.exports = function (grunt) {
         undef: true,
         unused: true
       },
-      build: {
-        src: ['Gruntfile.js'],
-        options: {
-          node: true
-        }
-      },
-      grid: {
-        src: ['lib/javascripts/**/*.js'],
+      source: {
+        src: ['Gruntfile.js', 'lib/javascripts/**/*.js'],
         options: {
           node: true,
           globals: {
@@ -65,7 +62,10 @@ module.exports = function (grunt) {
           'lib/javascripts/**/*.js': ['browserify'],
           'test/**/*.js': ['browserify']
         },
-        browserify: {}
+        browserify: {
+          transform: ['folderify'],
+          watch: true
+        }
       },
       ci: {
         options: {
@@ -80,9 +80,15 @@ module.exports = function (grunt) {
       }
     },
     watch: {
-      grid: {
-        files: 'lib/javascripts/**/*.js',
-        tasks: ['build'],
+      example: {
+        files: ['examples/**/*'],
+        options: {
+          livereload: true
+        }
+      },
+      source: {
+        files: ['lib/javascripts/**/*.js', 'lib/templates/**/*.html'],
+        tasks: ['browserify'],
         options: {
           livereload: true
         }
