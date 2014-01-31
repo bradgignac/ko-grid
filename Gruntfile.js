@@ -3,7 +3,7 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     browserify: {
-      grid: {
+      dist: {
         options: {
           transform: ['folderify']
         },
@@ -12,7 +12,7 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      grid: ['dist']
+      dist: ['dist']
     },
     connect: {
       server: {
@@ -39,14 +39,8 @@ module.exports = function (grunt) {
         undef: true,
         unused: true
       },
-      build: {
-        src: ['Gruntfile.js'],
-        options: {
-          node: true
-        }
-      },
-      grid: {
-        src: ['lib/javascripts/**/*.js'],
+      source: {
+        src: ['Gruntfile.js', 'lib/javascripts/**/*.js'],
         options: {
           node: true,
           globals: {
@@ -86,8 +80,14 @@ module.exports = function (grunt) {
       }
     },
     watch: {
-      grid: {
-        files: 'lib/javascripts/**/*.js',
+      example: {
+        files: ['examples/**/*'],
+        options: {
+          livereload: true
+        }
+      },
+      source: {
+        files: ['lib/javascripts/**/*.js', 'lib/templates/**/*.html'],
         tasks: ['browserify'],
         options: {
           livereload: true
