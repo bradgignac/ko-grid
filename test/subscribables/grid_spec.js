@@ -7,7 +7,7 @@ describe('grid', function () {
     array = ko.observableArray();
     viewModel = grid(array);
 
-    expect(viewModel.data).toBe(array);
+    expect(viewModel.data()).toBe(array());
   });
 
   it('creates GridViewModel with provided columns', function () {

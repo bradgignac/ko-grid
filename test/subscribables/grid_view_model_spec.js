@@ -9,7 +9,7 @@ describe('GridViewModel', function () {
     observable = ko.observableArray();
     viewModel = new GridViewModel(observable);
 
-    expect(viewModel.data).toBe(observable);
+    expect(viewModel.data()).toBe(observable());
   });
 
   describe('#addColumn', function () {
@@ -36,6 +36,26 @@ describe('GridViewModel', function () {
         { propertyname: '1' },
         { propertyname: '2' },
         { propertyname: '3' }
+      ]);
+    });
+
+    it('maintains sorting when adding new data', function () {
+      observable = ko.observableArray([
+        { propertyname: '2' },
+        { propertyname: '4' },
+        { propertyname: '1' }
+      ]);
+
+      viewModel = new GridViewModel(observable);
+      viewModel.sortColumn({ name: 'propertyname' });
+
+      observable.push({ propertyname: '3' });
+
+      expect(viewModel.data()).toEqual([
+        { propertyname: '1' },
+        { propertyname: '2' },
+        { propertyname: '3' },
+        { propertyname: '4' }
       ]);
     });
   });
