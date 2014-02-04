@@ -16,7 +16,10 @@
 
     i = 1;
     data = ko.observableArray();
-    grid = ko.grid(data, { 'name': 'text', 'count': 'link' });
+    grid = ko.grid(data, {
+      'name': ko.column({ header: 'Name' }),
+      'count': ko.column({ header: 'Count' })
+    });
     element = document.getElementById('grid-container');
 
     ko.applyBindings(grid, element);

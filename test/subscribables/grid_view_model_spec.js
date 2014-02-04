@@ -14,10 +14,17 @@ describe('GridViewModel', function () {
 
   describe('#addColumn', function () {
     it('adds a column to column array', function () {
-      viewModel = new GridViewModel();
-      viewModel.addColumn('columnName');
+      var column;
 
-      expect(viewModel.columns).toEqual([{ name: 'columnName' }]);
+      column = jasmine.createSpy('column');
+
+      viewModel = new GridViewModel();
+      viewModel.addColumn('columnName', column);
+
+      expect(viewModel.columns).toEqual([{
+        key: 'columnName',
+        column: column
+      }]);
     });
   });
 
