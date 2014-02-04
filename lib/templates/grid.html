@@ -1,6 +1,6 @@
 <div class="grid">
   <div class="grid-row grid-row-header" data-bind="foreach: { data: columns, as: 'column' }">
-    <span class="grid-cell grid-cell-header" data-bind="text: column.name"></span>
+    <span class="grid-cell grid-cell-header" data-bind="text: column.name, click: $parent.sortColumn.bind($parent)"></span>
   </div>
 
   <!-- ko foreach: { data: data, as: 'row' } -->
