@@ -16,8 +16,8 @@ describe('grid', function () {
   it('creates GridViewModel with provided columns', function () {
     array = ko.observableArray();
     viewModel = grid(array, {
-      'name': column({ header: 'Name' }),
-      'count': column({ header: 'Count' })
+      'name': column({ header: 'Name', sort: false }),
+      'count': column({ header: 'Count', sort: false })
     });
 
     expect(viewModel.columns).toEqual([
@@ -34,8 +34,8 @@ describe('grid', function () {
     viewModel = grid(array);
 
     expect(viewModel.columns).toEqual([
-      { key: 'name', column: { header: 'name' } },
-      { key: 'count', column: { header: 'count' } }
+      { key: 'name', column: { header: 'name', sort: true } },
+      { key: 'count', column: { header: 'count', sort: true } }
     ]);
   });
 });

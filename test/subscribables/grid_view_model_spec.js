@@ -1,4 +1,7 @@
-var GridViewModel = require('../../lib/javascripts/subscribables/grid_view_model');
+var GridViewModel, column;
+
+GridViewModel = require('../../lib/javascripts/subscribables/grid_view_model');
+column = require('../../lib/javascripts/subscribables/column');
 
 describe('GridViewModel', function () {
   var viewModel, observable;
@@ -37,9 +40,21 @@ describe('GridViewModel', function () {
       ]);
     });
 
+    it('does not sort if sorting is disabled for a column', function () {
+      viewModel = new GridViewModel(observable);
+
+      viewModel.sortColumn({ key: 'other', column: column({ sortable: false }) });
+
+      expect(viewModel.data()).toEqual([
+        { propertyname: '2', other: 'c' },
+        { propertyname: '4', other: 'b' },
+        { propertyname: '1', other: 'a' }
+      ]);
+    });
+
     it('initially sorts clicked column in ascending order', function () {
       viewModel = new GridViewModel(observable);
-      viewModel.sortColumn({ name: 'propertyname' });
+      viewModel.sortColumn({ key: 'propertyname' });
 
       expect(viewModel.data()).toEqual([
         { propertyname: '1', other: 'a' },
@@ -50,7 +65,7 @@ describe('GridViewModel', function () {
 
     it('maintains sorting when adding new data', function () {
       viewModel = new GridViewModel(observable);
-      viewModel.sortColumn({ name: 'propertyname' });
+      viewModel.sortColumn({ key: 'propertyname' });
 
       observable.push({ propertyname: '3', other: 'd' });
 
@@ -64,8 +79,8 @@ describe('GridViewModel', function () {
 
     it('toggles sort when clicking column a second time', function () {
       viewModel = new GridViewModel(observable);
-      viewModel.sortColumn({ name: 'propertyname' });
-      viewModel.sortColumn({ name: 'propertyname' });
+      viewModel.sortColumn({ key: 'propertyname' });
+      viewModel.sortColumn({ key: 'propertyname' });
 
       expect(viewModel.data()).toEqual([
         { propertyname: '4', other: 'b' },
@@ -76,8 +91,8 @@ describe('GridViewModel', function () {
 
     it('resets to ascending sort when clicking different column', function () {
       viewModel = new GridViewModel(observable);
-      viewModel.sortColumn({ name: 'propertyname' });
-      viewModel.sortColumn({ name: 'other' });
+      viewModel.sortColumn({ key: 'propertyname' });
+      viewModel.sortColumn({ key: 'other' });
 
       expect(viewModel.data()).toEqual([
         { propertyname: '1', other: 'a' },
