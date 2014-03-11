@@ -7,7 +7,9 @@
 
   <tbody data-bind="foreach: { data: data, as: 'row'}">
     <tr data-bind="foreach: { data: $parent.columns, as: 'column' }">
-      <td><span class="grid-cell" data-bind="template: { column.getTemplate(row[column]) } "></span></td>
+      <td><span class="grid-cell"
+        data-bind="template: {text: function () {return column.getTemplate(row[column.name]()); }, templateEngine: new ko.grid.textEngine()}">
+      </span></td>
     </tr>
   </tbody>
 </table>
