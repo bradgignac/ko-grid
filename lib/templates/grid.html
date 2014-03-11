@@ -7,7 +7,7 @@
 
   <tbody data-bind="foreach: { data: data, as: 'row'}">
     <tr data-bind="foreach: { data: $parent.columns, as: 'column' }">
-      <td data-bind="template: row[column.name]"></td>
+      <td><span class="grid-cell" data-bind="template: { column.getTemplate(row[column]) } "></span></td>
     </tr>
   </tbody>
 </table>
