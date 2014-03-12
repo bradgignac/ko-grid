@@ -1,12 +1,12 @@
 <table class="rs-list-table">
   <thead>
-    <tr data-bind="foreach: { data: columns, as: 'column' }">
-      <th data-bind="text: column.name, css: column.class"></th>
+    <tr data-bind="foreach: { data: columns, as: 'column', with: 'column' }">
+      <th data-bind="css: column.class, template: { text: column.headerTemplate(), templateEngine: new ko.grid.textEngine() }"></th>
     </tr>
   </thead>
-  <tbody data-bind="foreach: { data: data, as: 'row' }">
+  <tbody data-bind="foreach: { data: data, as: 'model'}">
     <tr data-bind="foreach: { data: $parent.columns, as: 'column'}">
-      <td data-bind="html: column.template(row)"></td>
+      <td data-bind="template: { text: column.template(model), templateEngine: new ko.grid.textEngine() }"></td>
     </tr>
   </tbody>
 </table>
