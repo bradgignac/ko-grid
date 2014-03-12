@@ -1,13 +1,12 @@
-<table class="grid rs-list-table">
-  <thead class="grid-row grid-row-header">
+<table class="rs-list-table">
+  <thead>
     <tr data-bind="foreach: { data: columns, as: 'column' }">
-      <th><span class="grid-cell grid-cell-header" data-bind="text: column.name, click: $parent.sortColumn.bind($parent)"></span></th>
+      <th data-bind="text: column.name, css: column.class"></th>
     </tr>
   </thead>
-
-  <tbody data-bind="foreach: { data: data, as: 'row'}">
-    <tr data-bind="foreach: { data: $parent.columns, as: 'column' }">
-      <td><span class="grid-cell" data-bind="template: { column.getTemplate(row[column]) } "></span></td>
+  <tbody data-bind="foreach: { data: data, as: 'row' }">
+    <tr data-bind="foreach: { data: $parent.columns, as: 'column'}">
+      <td data-bind="html: column.template(row)"></td>
     </tr>
   </tbody>
 </table>
