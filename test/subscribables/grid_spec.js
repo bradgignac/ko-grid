@@ -1,4 +1,7 @@
-var grid = require('../../lib/javascripts/subscribables/grid');
+var grid, column;
+
+grid = require('../../lib/javascripts/subscribables/grid');
+column = require('../../lib/javascripts/subscribables/column');
 
 describe('grid', function () {
   var array, viewModel;
@@ -13,13 +16,13 @@ describe('grid', function () {
   it('creates GridViewModel with provided columns', function () {
     array = ko.observableArray();
     viewModel = grid(array, {
-      'name': 'text',
-      'count': 'text'
+      'name': column({ header: 'Name', sort: false }),
+      'count': column({ header: 'Count', sort: false })
     });
 
     expect(viewModel.columns).toEqual([
-      { name: 'name' },
-      { name: 'count' }
+      { key: 'name', column: { header: 'Name' } },
+      { key: 'count', column: { header: 'Count' } }
     ]);
   });
 
@@ -31,8 +34,8 @@ describe('grid', function () {
     viewModel = grid(array);
 
     expect(viewModel.columns).toEqual([
-      { name: 'name' },
-      { name: 'count' }
+      { key: 'name', column: { header: 'name', sort: true } },
+      { key: 'count', column: { header: 'count', sort: true } }
     ]);
   });
 });

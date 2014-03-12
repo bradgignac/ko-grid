@@ -1,11 +1,11 @@
 <div class="grid">
-  <div class="grid-row grid-row-header" data-bind="foreach: { data: columns, as: 'column' }">
-    <span class="grid-cell grid-cell-header" data-bind="text: column.name, click: $parent.sortColumn.bind($parent)"></span>
+  <div class="grid-row grid-row-header" data-bind="foreach: { data: columns, as: 'c' }">
+    <span class="grid-cell grid-cell-header" data-bind="text: c.column.header, click: $parent.sortColumn.bind($parent)"></span>
   </div>
 
   <!-- ko foreach: { data: data, as: 'row' } -->
-  <div class="grid-row" data-bind="foreach: { data: $parent.columns, as: 'column' }">
-    <span class="grid-cell" data-bind="text: row[column.name]"></span>
+  <div class="grid-row" data-bind="foreach: { data: $parent.columns, as: 'c' }">
+    <span class="grid-cell" data-bind="text: row[c.key]"></span>
   </div>
   <!-- /ko -->
 </div>
