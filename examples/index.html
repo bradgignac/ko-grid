@@ -19,38 +19,45 @@
   <script type="application/javascript">
   var nameColumn, checkboxColumn;
 
-  nameColumn = {
+  nameColumn = ko.column({
     'name': 'Name',
     'class': 'name-column',
-    'template': function (data) { return '<span>' + data.name() + ' </span>'; }
-  };
+    'template': function () { return '<span data-bind="text: model.name"></span>'; }
+  });
 
-  checkboxColumn = {
-    'name': 'Count',
+  checkboxColumn = ko.column({
     'class': 'checkbox-column',
-    'template': function (data) { return '<input type="checkbox"></input>'; }
-  };
+    'checked': ko.observable(false),
+    'template': function () { return '<input type="checkbox" data-bind="checked: model.checked"></input>'; },
+    'headerTemplate': function () { return '<input type="checkbox" data-bind="checked: checked, click: checkAll(checked(), $root)"></input>'; },
+    'checkAll': function (checked, viewModel) {
+      var checked;
+
+      console.log(checked);
+      viewModel['data']().forEach(function (row) {
+        row['checked'](checked);
+      });
+    }
+  });
 
   document.addEventListener("DOMContentLoaded", function () {
-    var i, data, grid, element;
+    var data, grid, element;
 
-    i = 1;
     data = ko.observableArray();
     grid = ko.grid(data, [
       checkboxColumn,
       nameColumn
     ]);
-
     element = document.getElementById('grid-container');
 
     ko.applyBindings(grid, element);
 
-    data.push({ name: ko.observable("foo") });
-    data.push({ name: ko.observable("Tim") });
-    data.push({ name: ko.observable("Cook") });
+    data.push({ name: ko.observable("foo"), checked: ko.observable(false) });
+    data.push({ name: ko.observable("Tim"), checked: ko.observable(true) });
+    data.push({ name: ko.observable("Cook"), checked: ko.observable(true) });
 
     setTimeout(function () {
-      data.push({ name: ko.observable("Live") });
+      data.push({ name: ko.observable("Live"), checked: ko.observable(false) });
     }, 2000);
 
     setTimeout(function () {
