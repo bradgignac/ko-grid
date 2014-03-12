@@ -6,47 +6,18 @@
   <link rel="stylesheet" type="text/css" href="canon.min.css">
   <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
   <script src="ko-grid.js"></script>
-  <style type="text/css">
-    .checkbox-column {
-      width: 100px;
-    }
-  </style>
-
 </head>
 <body>
   <div id="grid-container" data-bind="grid: $data"></div>
 
   <script type="application/javascript">
-  var nameColumn, checkboxColumn;
-
-  nameColumn = ko.column({
-    'name': 'Name',
-    'class': 'name-column',
-    'template': function () { return '<span data-bind="text: model.name"></span>'; }
-  });
-
-  checkboxColumn = ko.column({
-    'class': 'checkbox-column',
-    'checked': ko.observable(false),
-    'template': function () { return '<input type="checkbox" data-bind="checked: model.checked"></input>'; },
-    'headerTemplate': function () { return '<input type="checkbox" data-bind="checked: checked, click: checkAll(checked(), $root)"></input>'; },
-    'checkAll': function (checked, viewModel) {
-      var checked;
-
-      console.log(checked);
-      viewModel['data']().forEach(function (row) {
-        row['checked'](checked);
-      });
-    }
-  });
-
   document.addEventListener("DOMContentLoaded", function () {
     var data, grid, element;
 
     data = ko.observableArray();
     grid = ko.grid(data, [
-      checkboxColumn,
-      nameColumn
+      ko.grid.columns.SelectColumn({ 'class': 'checkbox-column' }),
+      ko.grid.columns.TextColumn('name', { 'header': 'Name', 'class': 'name-column' })
     ]);
     element = document.getElementById('grid-container');
 
