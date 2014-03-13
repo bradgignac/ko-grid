@@ -6,6 +6,11 @@
   <link rel="stylesheet" type="text/css" href="canon.min.css">
   <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
   <script src="ko-grid.js"></script>
+  <style type="text/css">
+    .checkbox-column {
+      width: 100px;
+    }
+  </style>
 </head>
 <body>
   <div id="grid-container" data-bind="grid: $data"></div>
@@ -16,8 +21,12 @@
 
     data = ko.observableArray();
     grid = ko.grid(data, [
-      ko.grid.columns.SelectColumn({ 'class': 'checkbox-column' }),
-      ko.grid.columns.TextColumn('name', { 'header': 'Name', 'class': 'name-column' })
+      ko.grid.columns.SelectColumn('checked', { 'class': 'checkbox-column' }),
+      ko.grid.columns.TextColumn('name', {
+        'header': 'Name',
+        'class': 'name-column',
+        'sort': true
+      })
     ]);
     element = document.getElementById('grid-container');
 
