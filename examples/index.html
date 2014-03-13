@@ -20,7 +20,7 @@
     var data, grid, element;
 
     data = ko.observableArray();
-    grid = ko.grid(data, [
+    grid = ko.grid(null, [
       ko.grid.columns.SelectColumn('checked', { 'class': 'checkbox-column' }),
       ko.grid.columns.TextColumn('name', {
         'header': 'Name',
@@ -35,6 +35,9 @@
     data.push({ name: ko.observable("foo"), checked: ko.observable(false) });
     data.push({ name: ko.observable("Tim"), checked: ko.observable(true) });
     data.push({ name: ko.observable("Cook"), checked: ko.observable(true) });
+
+
+    grid.setData(data);
 
     setTimeout(function () {
       data.push({ name: ko.observable("Live"), checked: ko.observable(false) });
