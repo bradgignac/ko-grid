@@ -3,36 +3,48 @@
 <head>
   <title>KO Grid</title>
 
+  <link rel="stylesheet" type="text/css" href="https://eafdbc63c97ce6bec9ef-b0a668e5876bef6fe25684caf71db405.ssl.cf1.rackcdn.com/v1-latest/canon.min.css">
   <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
   <script src="ko-grid.js"></script>
+  <style type="text/css">
+    .checkbox-column {
+      width: 100px;
+    }
+  </style>
 </head>
 <body>
   <div id="grid-container" data-bind="grid: $data"></div>
 
   <script type="application/javascript">
-
   document.addEventListener("DOMContentLoaded", function () {
-    var i, data, grid, element;
+    var data, grid, element;
 
-    i = 1;
     data = ko.observableArray();
-    grid = ko.grid(data, { 'name': 'text', 'count': 'link' });
+    grid = ko.grid(null, [
+      ko.grid.columns.SelectColumn('checked', { 'class': 'checkbox-column' }),
+      ko.grid.columns.TextColumn('name', {
+        'header': 'Name',
+        'class': 'name-column',
+        'sortable': true
+      })
+    ]);
     element = document.getElementById('grid-container');
 
     ko.applyBindings(grid, element);
 
-    setInterval(function () {
-      data.push({ name: ko.observable(i), count: ko.observable(i) });
-      i += 1;
-    }, 1000);
+    data.push({ name: ko.observable("foo"), checked: ko.observable(false) });
+    data.push({ name: ko.observable("Tim"), checked: ko.observable(true) });
+    data.push({ name: ko.observable("Cook"), checked: ko.observable(true) });
 
-    setInterval(function () {
-      var raw, index, element;
 
-      raw = data.peek();
-      index = Math.floor(Math.random() * (raw.length));
-      element = raw[index];
-      element.name('Edited!');
+    grid.setData(data);
+
+    setTimeout(function () {
+      data.push({ name: ko.observable("Live"), checked: ko.observable(false) });
+    }, 2000);
+
+    setTimeout(function () {
+      grid.data()[0].name('Boom!');
     }, 5000);
   });
 
