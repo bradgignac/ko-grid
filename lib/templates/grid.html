@@ -1,19 +1,14 @@
 <div class="rs-embedded-list-table-wrapper rs-embedded-medium">
   <table class="rs-list-table">
     <thead>
-      <tr data-bind="foreach: { data: columns, as: 'column', with: 'column' }">
+      <tr data-bind="foreach: { data: $data.columns, as: 'column', with: 'column' }">
         <th data-bind="css: column.class, template: { text: column.headerTemplate(), templateEngine: new ko.grid.textEngine() }"></th>
       </tr>
     </thead>
-    <tbody data-bind="foreach: { data: data, as: 'model'}">
+    <tbody data-bind="foreach: { data: $data.data, as: 'model'}">
       <tr data-bind="foreach: { data: $parent.columns, as: 'column'}">
         <td data-bind="template: { text: column.bodyTemplate(model), templateEngine: new ko.grid.textEngine() }"></td>
       </tr>
     </tbody>
   </table>
-  <div class="rs-table-overlay rs-table-overlay-loading">
-    <div class="rs-table-overlay-content">
-      <div class="rs-table-overlay-message">Loading&hellip;</div>
-    </div>
-  </div>
 </div>
