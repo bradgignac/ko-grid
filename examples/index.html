@@ -70,7 +70,10 @@
         'class': 'email-column',
         'sortable': true
       })
-    ]);
+    ], {
+      'ascending-sort-css': 'rs-table-sort-asc',
+      'descending-sort-css': 'rs-table-sort-desc'
+    });
     element = document.getElementById('grid-container');
 
     ko.applyBindings(grid, element);
