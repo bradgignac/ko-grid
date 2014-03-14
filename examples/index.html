@@ -7,6 +7,9 @@
   <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
   <script src="ko-grid.js"></script>
   <style type="text/css">
+    .state-column {
+      padding: 10px 0;
+    }
     .checkbox-column {
       width: 100px;
     }
@@ -17,10 +20,22 @@
 
   <script type="application/javascript">
   document.addEventListener("DOMContentLoaded", function () {
-    var data, element;
+    var data, element, customStateColumn;
+
+    customStateColumn = ko.grid.columns.BaseColumn('state', {
+      'class': 'state-column rs-table-status',
+      'sortable': false,
+      'bodyClass': function (model) {
+        if (model.checked()) {
+          return 'rs-table-status rs-table-status-ok';
+        }
+        return 'rs-table-status rs-table-status-error';
+      }
+    });
 
     data = ko.observableArray();
-    grid = ko.grid(null, [
+    grid = ko.grid(data, [
+      customStateColumn,
       ko.grid.columns.SelectColumn('checked', { 'class': 'checkbox-column' }),
       ko.grid.columns.TextColumn('name', {
         'header': 'Name',
@@ -36,15 +51,14 @@
     data.push({ name: ko.observable("Tim"), checked: ko.observable(true) });
     data.push({ name: ko.observable("Cook"), checked: ko.observable(true) });
 
-
-    grid.setData(data);
+    // grid.setData(data);
 
     setTimeout(function () {
       data.push({ name: ko.observable("Live"), checked: ko.observable(false) });
     }, 2000);
 
     setTimeout(function () {
-      grid.data()[0].name('Boom!');
+      data()[0].name('Boom!');
     }, 5000);
   });
 
