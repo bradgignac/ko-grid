@@ -5,19 +5,19 @@
         <th data-bind="css: column.class">
           <!-- ko if: hasHeader() -->
             <!-- ko if: sortable -->
-            <a class="rs-table-sort" data-bind="visible: sortable, css: column.sortState, click: $parent.sort.bind($parent, column)">
+            <a class="rs-table-sort" data-bind="css: column.sortState, click: $parent.sort.bind($parent, column)">
               <span class="rs-table-sort-text" data-bind="template: { text: column.headerTemplate(), templateEngine: new ko.grid.textEngine() }"></span>
               <span class="rs-table-sort-indicator"></span>
             </a>
             <!-- /ko -->
             <!-- ko ifnot: sortable -->
-            <span class="rs-table-sort-text" data-bind="visible: !sortable, template: { text: column.headerTemplate(), templateEngine: new ko.grid.textEngine() }"></span>
+            <span class="rs-table-sort-text" data-bind="template: { text: column.headerTemplate(), templateEngine: new ko.grid.textEngine() }"></span>
             <!-- /ko -->
           <!-- /ko -->
         </th>
       </tr>
     </thead>
-    <tbody data-bind="foreach: { data: $data.data, as: 'model'}">
+    <tbody data-bind="foreach: { data: $data.observableData(), as: 'model'}">
       <tr data-bind="foreach: { data: $parent.columns, as: 'column'}">
         <td data-bind="css: column.bodyClass(model), template: { text: column.bodyTemplate(model), templateEngine: new ko.grid.textEngine() }"></td>
       </tr>
