@@ -7,10 +7,10 @@
   <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
   <script src="ko-grid.js"></script>
   <style type="text/css">
- /*   .state-column {
-      padding: 10px 0;
-    }*/
-    .checkbox-column {
+    .first-name-column {
+      width: 100px;
+    }
+    .last-name-column {
       width: 100px;
     }
   </style>
@@ -20,7 +20,21 @@
 
   <script type="application/javascript">
   document.addEventListener("DOMContentLoaded", function () {
-    var data, element, customStateColumn;
+    var data, element, customStateColumn, Person;
+
+    Person = function (firstName, lastName) {
+      var model;
+
+      model = {};
+      model['firstName'] = ko.observable(firstName);
+      model['lastName'] = ko.observable(lastName);
+      model['email'] = ko.computed(function () {
+        return this.firstName() + '.' + this.lastName() + '@rackspace.com';
+      }, model);
+      model['checked'] = ko.observable(false);
+
+      return model;
+    };
 
     customStateColumn = ko.grid.columns.BaseColumn('state', {
       'class': 'state-column rs-table-status',
@@ -33,13 +47,27 @@
       }
     });
 
+
+
+
+
     data = ko.observableArray();
     grid = ko.grid(data, [
       customStateColumn,
       ko.grid.columns.SelectColumn('checked', { 'class': 'checkbox-column' }),
-      ko.grid.columns.TextColumn('name', {
-        'header': 'Name',
-        'class': 'name-column',
+      ko.grid.columns.TextColumn('firstName', {
+        'header': 'First Name',
+        'class': 'first-name-column',
+        'sortable': true
+      }),
+      ko.grid.columns.TextColumn('lastName', {
+        'header': 'Last Name',
+        'class': 'last-name-column',
+        'sortable': true
+      }),
+      ko.grid.columns.TextColumn('email', {
+        'header': 'Email',
+        'class': 'email-column',
         'sortable': true
       })
     ]);
@@ -47,19 +75,17 @@
 
     ko.applyBindings(grid, element);
 
-    data.push({ name: ko.observable("foo"), checked: ko.observable(false) });
-    data.push({ name: ko.observable("Tim"), checked: ko.observable(true) });
-    data.push({ name: ko.observable("Cook"), checked: ko.observable(true) });
-
-    // grid.setData(data);
+    data.push(Person("Brad", "Gignac"));
+    data.push(Person("Joe", "Nottingham"));
+    data.push(Person("Adam", "Pickeral"));
 
     setTimeout(function () {
-      data.push({ name: ko.observable("Live"), checked: ko.observable(false) });
-    }, 2000);
-
-    setTimeout(function () {
-      data()[0].name('Boom!');
+      data.push(Person("Austin", "Burnett"));
     }, 5000);
+
+    setTimeout(function () {
+      data()[1].firstName('Joseph');
+    }, 10000);
   });
 
   </script>
