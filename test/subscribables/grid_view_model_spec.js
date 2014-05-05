@@ -1,82 +1,33 @@
 var GridViewModel = require('../../lib/javascripts/subscribables/grid_view_model');
+var BaseColumn = require('../../lib/javascripts/subscribables/columns/base_column');
 
 describe('GridViewModel', function () {
-  var viewModel, observable;
+  var viewModel, observableArray;
+
+  beforeEach(function () {
+    observableArray = ko.observableArray(['foo', 'bar', 'fun']);
+    viewModel = new GridViewModel(observableArray);
+  });
 
   it('sets data source', function () {
-    var observable;
-
-    observable = ko.observableArray();
-    viewModel = new GridViewModel(observable);
-
-    expect(viewModel.data()).toBe(observable());
+    expect(viewModel.data()).toBe(observableArray());
   });
 
   describe('#addColumn', function () {
-    it('adds a column to column array', function () {
-      viewModel = new GridViewModel();
-      viewModel.addColumn('columnName');
+    var newColumn;
 
-      expect(viewModel.columns).toEqual([{ name: 'columnName' }]);
-    });
-  });
-
-  describe('#sortColumn', function () {
     beforeEach(function () {
-      observable = ko.observableArray([
-        { propertyname: '2', other: 'c' },
-        { propertyname: '4', other: 'b' },
-        { propertyname: '1', other: 'a' }
-      ]);
+      newColumn = new BaseColumn('key', { sortable: true });
+      viewModel = new GridViewModel();
+      viewModel.addColumn(newColumn);
     });
 
-    it('initially sorts clicked column in ascending order', function () {
-      viewModel = new GridViewModel(observable);
-      viewModel.sortColumn({ name: 'propertyname' });
-
-      expect(viewModel.data()).toEqual([
-        { propertyname: '1', other: 'a' },
-        { propertyname: '2', other: 'c' },
-        { propertyname: '4', other: 'b' }
-      ]);
+    it('adds a column to column array', function () {
+      expect(viewModel.getColumns()[0]).toEqual(newColumn);
     });
 
-    it('maintains sorting when adding new data', function () {
-      viewModel = new GridViewModel(observable);
-      viewModel.sortColumn({ name: 'propertyname' });
+    it('sorts data', function () {
 
-      observable.push({ propertyname: '3', other: 'd' });
-
-      expect(viewModel.data()).toEqual([
-        { propertyname: '1', other: 'a' },
-        { propertyname: '2', other: 'c' },
-        { propertyname: '3', other: 'd' },
-        { propertyname: '4', other: 'b' }
-      ]);
-    });
-
-    it('toggles sort when clicking column a second time', function () {
-      viewModel = new GridViewModel(observable);
-      viewModel.sortColumn({ name: 'propertyname' });
-      viewModel.sortColumn({ name: 'propertyname' });
-
-      expect(viewModel.data()).toEqual([
-        { propertyname: '4', other: 'b' },
-        { propertyname: '2', other: 'c' },
-        { propertyname: '1', other: 'a' }
-      ]);
-    });
-
-    it('resets to ascending sort when clicking different column', function () {
-      viewModel = new GridViewModel(observable);
-      viewModel.sortColumn({ name: 'propertyname' });
-      viewModel.sortColumn({ name: 'other' });
-
-      expect(viewModel.data()).toEqual([
-        { propertyname: '1', other: 'a' },
-        { propertyname: '4', other: 'b' },
-        { propertyname: '2', other: 'c' }
-      ]);
     });
   });
 });
