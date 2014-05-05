@@ -3,37 +3,91 @@
 <head>
   <title>KO Grid</title>
 
+  <link rel="stylesheet" type="text/css" href="https://eafdbc63c97ce6bec9ef-b0a668e5876bef6fe25684caf71db405.ssl.cf1.rackcdn.com/v1-latest/canon.min.css">
   <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
-  <script src="ko-grid.js"></script>
+  <script src="development/ko-grid-latest.min.js"></script>
+  <style type="text/css">
+    .first-name-column {
+      width: 100px;
+    }
+    .last-name-column {
+      width: 100px;
+    }
+    .checkbox-column{
+      width: 25px;
+    }
+  </style>
 </head>
 <body>
   <div id="grid-container" data-bind="grid: $data"></div>
 
   <script type="application/javascript">
-
   document.addEventListener("DOMContentLoaded", function () {
-    var i, data, grid, element;
+    var data, element, customStateColumn, Person;
 
-    i = 1;
+    Person = function (firstName, lastName) {
+      var model;
+
+      model = {};
+      model['firstName'] = ko.observable(firstName);
+      model['lastName'] = ko.observable(lastName);
+      model['email'] = ko.computed(function () {
+        return this.firstName() + '.' + this.lastName() + '@rackspace.com';
+      }, model);
+      model['checked'] = ko.observable(false);
+
+      return model;
+    };
+
+    customStateColumn = ko.grid.columns.BaseColumn('state', {
+      'class': 'state-column rs-table-status',
+      'sortable': false,
+      'bodyClass': function (model) {
+        if (model.checked()) {
+          return 'rs-table-status rs-table-status-ok';
+        }
+        return 'rs-table-status rs-table-status-error';
+      }
+    });
+
     data = ko.observableArray();
-    grid = ko.grid(data, { 'name': 'text', 'count': 'link' });
+    grid = ko.grid(data, [
+      customStateColumn,
+      ko.grid.columns.SelectColumn('checked', { 'class': 'checkbox-column' }),
+      ko.grid.columns.TextColumn('firstName', {
+        'headerTemplate': 'First Name',
+        'class': 'first-name-column',
+        'sortable': true
+      }),
+      ko.grid.columns.TextColumn('lastName', {
+        'headerTemplate': 'Last Name',
+        'class': 'last-name-column',
+        'sortable': true
+      }),
+      ko.grid.columns.TextColumn('email', {
+        'headerTemplate': 'Email',
+        'class': 'email-column',
+        'sortable': true
+      })
+    ], {
+      'ascending-sort-css': 'rs-table-sort-asc',
+      'descending-sort-css': 'rs-table-sort-desc'
+    });
     element = document.getElementById('grid-container');
 
     ko.applyBindings(grid, element);
 
-    setInterval(function () {
-      data.push({ name: ko.observable(i), count: ko.observable(i) });
-      i += 1;
-    }, 1000);
+    data.push(Person("Brad", "Gignac"));
+    data.push(Person("Joe", "Nottingham"));
+    data.push(Person("Adam", "Pickeral"));
 
-    setInterval(function () {
-      var raw, index, element;
-
-      raw = data.peek();
-      index = Math.floor(Math.random() * (raw.length));
-      element = raw[index];
-      element.name('Edited!');
+    setTimeout(function () {
+      data.push(Person("Austin", "Burnett"));
     }, 5000);
+
+    setTimeout(function () {
+      data()[1].firstName('Joseph');
+    }, 10000);
   });
 
   </script>
