@@ -9,7 +9,14 @@ module.exports = function (grunt) {
           transform: ['folderify']
         },
         src: ['lib/javascripts/ko-grid.js'],
-        dest: 'dist/ko-grid-<%= pkg.version %>.min.js'
+        dest: 'dist/production/ko-grid-<%= pkg.version %>.min.js'
+      },
+      development: {
+        options: {
+          transform: ['folderify']
+        },
+        src: ['lib/javascripts/ko-grid.js'],
+        dest: 'dist/development/ko-grid-latest.min.js'
       }
     },
     clean: {
