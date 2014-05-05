@@ -1,6 +1,6 @@
 {
   "name": "ko-grid",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Grid binding for Knockout.js",
   "author": "Brad Gignac <bgignac@bradgignac.com>",
   "license": "MIT",

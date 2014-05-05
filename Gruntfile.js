@@ -2,13 +2,14 @@ module.exports = function (grunt) {
   'use strict';
 
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
     browserify: {
       dist: {
         options: {
           transform: ['folderify']
         },
         src: ['lib/javascripts/ko-grid.js'],
-        dest: 'dist/ko-grid.js'
+        dest: 'dist/ko-grid-<%= pkg.version %>.min.js'
       }
     },
     clean: {
