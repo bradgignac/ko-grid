@@ -47,26 +47,22 @@
       }
     });
 
-
-
-
-
     data = ko.observableArray();
     grid = ko.grid(data, [
       customStateColumn,
       ko.grid.columns.SelectColumn('checked', { 'class': 'checkbox-column' }),
       ko.grid.columns.TextColumn('firstName', {
-        'header': 'First Name',
+        'headerTemplate': 'First Name',
         'class': 'first-name-column',
         'sortable': true
       }),
       ko.grid.columns.TextColumn('lastName', {
-        'header': 'Last Name',
+        'headerTemplate': 'Last Name',
         'class': 'last-name-column',
         'sortable': true
       }),
       ko.grid.columns.TextColumn('email', {
-        'header': 'Email',
+        'headerTemplate': 'Email',
         'class': 'email-column',
         'sortable': true
       })
